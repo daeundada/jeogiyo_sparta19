@@ -27,16 +27,10 @@ public class AuthService {
 
         validateUserSignUp(requestDto);
 
-        User user = User.builder()
-                .username(username)
-                .nickname(requestDto.getNickname())
-                .password(password)
-                .email(requestDto.getEmail())
-                .address(requestDto.getAddress())
-                .roles(requestDto.getRoles())
-                .isPublic(true)
-                .build();
+        User user = requestDto.toUser(password);
+        user.setCreatedBy(username);
         userRepository.save(user);
+
         log.info("회원가입 성공: username={}, email={}", username, requestDto.getEmail());
         return UserResponseDto.fromEntity(user);
     }

@@ -5,10 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import sparta.jeogiyo.domain.user.entity.User;
 import sparta.jeogiyo.domain.user.entity.UserRoleEnum;
 
 @Getter
@@ -41,10 +39,16 @@ public class UserSignUpRequestDto {
 
     private Boolean isPublic = true;
 
-    public List<GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
-                .collect(Collectors.toList());
+    public User toUser(String encodedPassword) {
+        return User.builder()
+                .username(username)
+                .nickname(nickname)
+                .password(encodedPassword)
+                .email(email)
+                .address(address)
+                .roles(roles)
+                .isPublic(isPublic)
+                .build();
     }
 
 }

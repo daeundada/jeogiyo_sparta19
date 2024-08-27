@@ -30,7 +30,7 @@ public class UserUpdateRequestDto {
     @NotBlank(message = "주소는 필수 항목입니다.")
     private String address;
 
-    public void setPassword (String password) {
+    public void setUpdatePassword(String password) {
         this.updatePassword = password;
     }
 
