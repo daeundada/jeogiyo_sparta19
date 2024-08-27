@@ -2,6 +2,7 @@ package sparta.jeogiyo.domain.store.controller;
 
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sparta.jeogiyo.domain.store.dto.request.StoreRequest;
+import sparta.jeogiyo.domain.store.dto.request.StoreSearchRequest;
 import sparta.jeogiyo.domain.store.dto.response.StoreResponse;
 import sparta.jeogiyo.domain.store.domain.Store;
 import sparta.jeogiyo.domain.store.service.StoreService;
@@ -62,4 +64,9 @@ public class StoreController {
         return ResponseEntity.ok(updatedStore.toResponse());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Page<Store>> searchStore(StoreSearchRequest request){
+        Page<Store> stores = storeService.searchStores(request);
+        return ResponseEntity.ok(stores);
+    }
 }
