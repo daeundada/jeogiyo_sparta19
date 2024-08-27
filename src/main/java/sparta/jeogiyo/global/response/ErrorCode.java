@@ -12,7 +12,21 @@ public enum ErrorCode {
     BAD_REQUEST(400, "Bad request."),
     UNAUTHORIZED(401, "Unauthorized access."),
     FORBIDDEN(403, "Forbidden."),
-    INTERNAL_SERVER_ERROR(500, "Internal server error.");
+    INTERNAL_SERVER_ERROR(500, "Internal server error."),
+    INVALID_REQUEST_BODY(400, "잘못된 요청 입니다."),
+
+    // User 관련
+    DUPLICATE_EMAIL(409, "중복된 이메일입니다."),
+    DUPLICATE_USERNAME(409, "중복된 아이디입니다."),
+    DUPLICATE_NICKNAME(409, "중복된 닉네임입니다."),
+    USER_NOT_FOUND(404, "존재하지 않는 사용자입니다."),
+    INVALID_USERNAME_PASSWORD(401, "아이디 또는 비밀번호가 틀렸습니다."),
+    PASSWORD_NOT_MATCH(401, "비밀번호가 틀렸습니다."),
+    USER_UNAUTHORIZED(401, "권한이 없는 사용자입니다."),
+
+    // JWT 관련
+    INVALID_JWT_TOKEN(401, "유효하지 않은 토큰입니다."),
+    UNSUPPORTED_JWT_TOKEN(401, "지원되지 않는 JWT 토큰입니다.");
 
     private final int status;
     private final String message;
