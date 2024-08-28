@@ -1,9 +1,10 @@
 package sparta.jeogiyo.domain.store.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import java.util.ArrayList;
 
+import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,14 +13,17 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import sparta.jeogiyo.domain.store.dto.request.StoreSearchRequest;
 import sparta.jeogiyo.domain.store.dto.request.StoreRequest;
 import sparta.jeogiyo.domain.store.dto.response.StoreResponse;
 import sparta.jeogiyo.domain.store.domain.Store;
 import sparta.jeogiyo.domain.store.repository.StoreRepository;
+import sparta.jeogiyo.domain.user.entity.User;
+import sparta.jeogiyo.global.response.CustomException;
+import sparta.jeogiyo.global.response.ErrorCode;
 
+@Slf4j
 @Service
 public class StoreService {
 
@@ -31,39 +35,49 @@ public class StoreService {
 
     @Transactional
     public Store addStore(StoreRequest storeRequest) {
+
+        validateAddStore(storeRequest);
+
         return storeRepository.save(storeRequest.toEntity());
     }
 
     //get 메소드들의 경우 읽기 전용이기때문에 readOnly 로 성능 최적화를 ,,, 노려봅니다,,,,
     @Transactional(readOnly = true)
-    public List<StoreResponse> findAll() {
-        return storeRepository.findAll().stream()
-                .map(Store::toResponse)
-                .collect(Collectors.toList());
+    public Page<StoreResponse> findAll(int page, int size, String sortBy, boolean isAsc) {
+        if (size != 10 && size != 30 && size != 50) {
+            size = 10;
+        }
+
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<Store> storePage = storeRepository.findAll(pageable);
+        return storePage.map(Store::toResponse);
     }
 
     @Transactional(readOnly = true)
     public Store findStore(UUID storeId) {
         return storeRepository.findById(storeId)
                 .orElseThrow(
-                        () -> new EntityNotFoundException("Store not found with id: " + storeId));
+                        () -> new CustomException(ErrorCode.STORE_ID_NOT_FOUND));
     }
 
     @Transactional
     public Store deleteStore(UUID storeId) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(
-                        () -> new EntityNotFoundException("Store not found with id: " + storeId));
-        //삭제 요청시 내부로직은 patch로 동작해 상태만 '삭제' 상태로 변경됩니다.
+                        () -> new CustomException(ErrorCode.STORE_ID_NOT_FOUND));
         store.setIs_deleted(true);
         return storeRepository.save(store);
     }
 
     @Transactional
-    public Store patchStore(UUID storeId, StoreRequest storeRequest) {
+    public Store updateStore(UUID storeId, StoreRequest storeRequest) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(
-                        () -> new EntityNotFoundException("Store not found with id: " + storeId));
+                        () -> new CustomException(ErrorCode.STORE_ID_NOT_FOUND));
 
         if (storeRequest.getStoreName() != null) {
             store.setStoreName(storeRequest.getStoreName());
@@ -77,12 +91,24 @@ public class StoreService {
         return storeRepository.save(store);
     }
 
-    public Page<Store> searchStores(StoreSearchRequest request) {
-        Pageable pageable = PageRequest.of(request.getPageNumber(), request.getPageSize(),
-                Sort.by(Sort.Order.by(request.getSortBy())).ascending());
+    @Transactional(readOnly = true)
+    public Page<StoreResponse> searchStores(StoreSearchRequest request, int page, int size,
+            String sortBy, boolean isAsc) {
+
+        if (size != 10 && size != 30 && size != 50) {
+            size = 10;
+        }
+
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+
+        Pageable pageable = PageRequest.of(page, size, sort);
 
         Specification<Store> spec = buildSpecification(request);
-        return storeRepository.findAll(spec, pageable);
+
+        Page<Store> storePage = storeRepository.findAll(spec, pageable);
+
+        return storePage.map(Store::toResponse);
     }
 
     private Specification<Store> buildSpecification(StoreSearchRequest request) {
@@ -107,5 +133,20 @@ public class StoreService {
 
             return query.getRestriction();
         };
+    }
+
+    private void validateAddStore(StoreRequest request) {
+        Optional<User> checkStoreNumber = storeRepository.findBystoreNumber(
+                request.getStoreNumber());
+        if (checkStoreNumber.isPresent()) {
+            log.warn("가게등록 실패 - 중복된 전화번호: {}", request.getStoreNumber());
+            throw new CustomException(ErrorCode.DUPLICATE_STORE_NUMBER);
+        }
+
+        Optional<User> checkStoreName = storeRepository.findBystoreName(request.getStoreName());
+        if (checkStoreName.isPresent()) {
+            log.warn("가게등록 실패 - 중복된 가게이름: {}", request.getStoreName());
+            throw new CustomException(ErrorCode.DUPLICATE_STORE_NAME);
+        }
     }
 }
