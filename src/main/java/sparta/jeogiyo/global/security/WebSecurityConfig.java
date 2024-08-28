@@ -75,11 +75,11 @@ public class WebSecurityConfig {
 
                         // 가게 관련
                         // 가게 등록
-                        .requestMatchers(HttpMethod.POST, "/api/stores").hasAnyRole(OWNER, MASTER)
+                        .requestMatchers(HttpMethod.POST, "/api/stores").hasAnyAuthority(OWNER, MASTER)
 
                         // 가게 수정
                         .requestMatchers(HttpMethod.PATCH, "/api/stores/**")
-                        .hasAnyRole(OWNER, MASTER)
+                        .hasAnyAuthority(OWNER, MASTER)
 
                         // 가게 단일 조회
                         .requestMatchers(HttpMethod.GET, "/api/stores/**").permitAll()
@@ -90,11 +90,11 @@ public class WebSecurityConfig {
                         // 주문 관련
                         // 주문 등록
                         .requestMatchers(HttpMethod.POST, "/api/orders/cart/**")
-                        .hasAnyRole(CUSTOMER, MASTER)
+                        .hasAnyAuthority(CUSTOMER, MASTER)
 
                         // 주문 수정
                         .requestMatchers(HttpMethod.PATCH, "/api/stores/**")
-                        .hasAnyRole(OWNER, MASTER)
+                        .hasAnyAuthority(OWNER, MASTER)
 
                         // 주문 삭제
                         .requestMatchers(HttpMethod.DELETE, "/api/orders/**").permitAll()
@@ -118,14 +118,14 @@ public class WebSecurityConfig {
 
                         // 상품 관련
                         // 상품 생성
-                        .requestMatchers(HttpMethod.POST, "/api/products/store/**").hasRole(OWNER)
+                        .requestMatchers(HttpMethod.POST, "/api/products/store/**").hasAuthority(OWNER)
 
                         // 상품 수정
-                        .requestMatchers(HttpMethod.PATCH, "/api/products/**").hasRole(OWNER)
+                        .requestMatchers(HttpMethod.PATCH, "/api/products/**").hasAuthority(OWNER)
 
                         // 상품 삭제
                         .requestMatchers(HttpMethod.DELETE, "/api/products/**")
-                        .hasAnyRole(OWNER, MASTER)
+                        .hasAnyAuthority(OWNER, MASTER)
 
                         // 상품 단일 조회
                         .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
@@ -136,17 +136,17 @@ public class WebSecurityConfig {
                         // 장바구니 관련
                         // 장바구니 메뉴 담기
                         .requestMatchers(HttpMethod.POST, "/api/carts/product/**")
-                        .hasAnyRole(CUSTOMER, MASTER)
+                        .hasAnyAuthority(CUSTOMER, MASTER)
 
                         // 장바구니 메뉴 삭제
                         .requestMatchers(HttpMethod.DELETE, "/api/carts/product/**")
-                        .hasAnyRole(CUSTOMER, MASTER)
+                        .hasAnyAuthority(CUSTOMER, MASTER)
 
                         // 장바구니 조회
-                        .requestMatchers(HttpMethod.GET, "/api/carts").hasAnyRole(CUSTOMER, MASTER)
+                        .requestMatchers(HttpMethod.GET, "/api/carts").hasAnyAuthority(CUSTOMER, MASTER)
 
                         // Chatbot 관련
-                        .requestMatchers(HttpMethod.POST, "/api/chats").hasAnyRole(OWNER, MASTER));
+                        .requestMatchers(HttpMethod.POST, "/api/chats").hasAnyAuthority(OWNER, MASTER));
 
         http.sessionManagement(
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
