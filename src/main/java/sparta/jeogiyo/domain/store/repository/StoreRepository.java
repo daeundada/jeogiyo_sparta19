@@ -12,7 +12,7 @@ import sparta.jeogiyo.domain.user.entity.User;
 public interface StoreRepository extends JpaRepository<Store, UUID>,
         JpaSpecificationExecutor<Store> {
 
-    Optional<User> findBystoreNumber(String storeNumber);
+    Optional<Store> findBystoreNumber(String storeNumber);
 
-    Optional<User> findBystoreName(String storeName);
+    Optional<Store> findBystoreName(String storeName);
 }

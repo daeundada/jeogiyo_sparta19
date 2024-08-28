@@ -19,6 +19,7 @@ import sparta.jeogiyo.domain.store.dto.request.StoreRequest;
 import sparta.jeogiyo.domain.store.dto.response.StoreResponse;
 import sparta.jeogiyo.domain.store.domain.Store;
 import sparta.jeogiyo.domain.store.repository.StoreRepository;
+import sparta.jeogiyo.domain.user.UserDetailsImpl;
 import sparta.jeogiyo.domain.user.entity.User;
 import sparta.jeogiyo.global.response.CustomException;
 import sparta.jeogiyo.global.response.ErrorCode;
@@ -65,11 +66,11 @@ public class StoreService {
     }
 
     @Transactional
-    public Store deleteStore(UUID storeId) {
+    public Store deleteStore(UUID storeId, UserDetailsImpl user) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(
                         () -> new CustomException(ErrorCode.STORE_ID_NOT_FOUND));
-        store.setIs_deleted(true);
+        store.delete(user);
         return storeRepository.save(store);
     }
 
@@ -136,14 +137,14 @@ public class StoreService {
     }
 
     private void validateAddStore(StoreRequest request) {
-        Optional<User> checkStoreNumber = storeRepository.findBystoreNumber(
+        Optional<Store> checkStoreNumber = storeRepository.findBystoreNumber(
                 request.getStoreNumber());
         if (checkStoreNumber.isPresent()) {
             log.warn("가게등록 실패 - 중복된 전화번호: {}", request.getStoreNumber());
             throw new CustomException(ErrorCode.DUPLICATE_STORE_NUMBER);
         }
 
-        Optional<User> checkStoreName = storeRepository.findBystoreName(request.getStoreName());
+        Optional<Store> checkStoreName = storeRepository.findBystoreName(request.getStoreName());
         if (checkStoreName.isPresent()) {
             log.warn("가게등록 실패 - 중복된 가게이름: {}", request.getStoreName());
             throw new CustomException(ErrorCode.DUPLICATE_STORE_NAME);

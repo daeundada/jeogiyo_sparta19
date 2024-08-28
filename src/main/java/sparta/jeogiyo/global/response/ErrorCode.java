@@ -25,7 +25,7 @@ public enum ErrorCode {
     USER_UNAUTHORIZED(401, "권한이 없는 사용자입니다."),
 
     // Store 관련
-    STORE_ID_NOT_FOUND(404, "존재하지않는 가게 ID 입니다."),
+    STORE_ID_NOT_FOUND(404, "존재하지 않는 가게 ID 입니다."),
     DUPLICATE_STORE_NUMBER(409, "중복된 가게 번호입니다."),
     DUPLICATE_STORE_NAME(409, "중복된 가게 이름입니다."),
 

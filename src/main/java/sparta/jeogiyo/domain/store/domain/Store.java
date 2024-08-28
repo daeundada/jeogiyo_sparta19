@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,12 +16,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sparta.jeogiyo.domain.store.dto.response.StoreResponse;
+import sparta.jeogiyo.domain.user.UserDetailsImpl;
 import sparta.jeogiyo.domain.user.entity.User;
 import sparta.jeogiyo.global.entity.BaseTimeEntity;
 
 @Builder
 @Entity
-@Table(name = "p_store")
+@Table(name = "p_stores")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -55,5 +57,11 @@ public class Store extends BaseTimeEntity {
                 .storeNumber(storeNumber)
                 .category(category)
                 .build();
+    }
+
+    public void delete(UserDetailsImpl user) {
+        this.Is_deleted = true;
+        this.setDeletedAt(LocalDateTime.now());
+        this.setDeletedBy(user.getUser().getUsername());
     }
 }
