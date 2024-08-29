@@ -13,7 +13,6 @@ import sparta.jeogiyo.domain.user.entity.User;
 @NoArgsConstructor
 public class StoreRequest {
 
-    private UUID storeId;
     private User userId;
     private String storeName;
     private String storeNumber;
@@ -21,7 +20,6 @@ public class StoreRequest {
 
     public Store toEntity() {
         return Store.builder()
-                .storeId(storeId)
                 .user(userId)
                 .storeName(storeName)
                 .storeNumber(storeNumber)
