@@ -24,7 +24,7 @@ import sparta.jeogiyo.domain.user.dto.request.UserUpdateRequestDto;
 import sparta.jeogiyo.global.entity.BaseTimeEntity;
 
 @Entity
-@Table(name = "p_user")
+@Table(name = "p_users")
 @Getter
 @Builder
 @AllArgsConstructor
