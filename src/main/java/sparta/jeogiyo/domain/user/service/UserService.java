@@ -1,6 +1,5 @@
 package sparta.jeogiyo.domain.user.service;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -82,8 +81,6 @@ public class UserService {
         validateUserRequestDto(user, deleteUserId, deleteRequestDto.getPassword());
 
         user.delete();
-        user.setDeletedAt(LocalDateTime.now());
-        user.setDeletedBy(user.getUsername());
         userRepository.save(user);
     }
 
@@ -94,7 +91,7 @@ public class UserService {
         }
 
         // 토큰으로 인증된 User Id와 요청하는 User의 Id와 다른 경우
-        if (!Objects.equals(requestId, user.getUser_id())) {
+        if (!Objects.equals(requestId, user.getUserId())) {
             throw new CustomException(ErrorCode.USER_UNAUTHORIZED);
         }
 
