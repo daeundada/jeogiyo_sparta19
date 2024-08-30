@@ -18,6 +18,7 @@ import sparta.jeogiyo.domain.product.dto.request.ProductRequest;
 import sparta.jeogiyo.domain.product.dto.response.ProductResponse;
 import sparta.jeogiyo.domain.product.entity.Product;
 import sparta.jeogiyo.domain.product.repository.ProductRepository;
+import sparta.jeogiyo.domain.store.domain.Store;
 import sparta.jeogiyo.domain.store.repository.StoreRepository;
 import sparta.jeogiyo.domain.user.UserDetailsImpl;
 import sparta.jeogiyo.global.response.CustomException;
@@ -86,6 +87,21 @@ public class ProductService {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
+            if (request.getStoreId() != null) {
+                predicates.add(
+                        criteriaBuilder.like(root.get("storeId"), "%" + request.getStoreId() + "%"));
+            }
+
+            if (request.getProductName() != null) {
+                predicates.add(
+                        criteriaBuilder.equal(root.get("name"), request.getProductName()));
+            }
+
+            if (request.getProductPrice() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("price"), request.getProductPrice()));
+            }
+
+            assert query != null;
             query.where(predicates.toArray(new Predicate[0]));
 
         return query.getRestriction();};
@@ -93,9 +109,19 @@ public class ProductService {
 
     @Transactional
     public Product updateProduct(UUID storeId, ProductRequest request) {
-        Product product = null;
-        return product;
-    }
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new CustomException(ErrorCode.STORE_ID_NOT_FOUND));
+
+        Product product = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_ID_NOT_FOUND));
+
+        if (!product.getStoreId().getStoreId().equals(storeId)) {
+            throw new CustomException(ErrorCode.INVALID_REQUEST_BODY);
+        }
+
+        product.updateProductDetails(request.getProductName(), request.getProductPrice(), request.getProductExplain(), store);
+
+        return productRepository.save(product);    }
 
     @Transactional
     public Product deleteProduct(UUID productId, UserDetailsImpl user) {
