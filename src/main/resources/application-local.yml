@@ -1,15 +1,13 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    #    url: ${LOCAL_DB_URL}
-    url: jdbc:postgresql://localhost:5432/postgres
-    #    username: ${LOCAL_DB_USER}
-    username: postgres
-    #    password: ${LOCAL_DB_PASSWORD}
-    password: cokelover5137!
+    url: ${LOCAL_DB_URL}
+    username: ${LOCAL_DB_USER}
+    password: ${LOCAL_DB_PASSWORD}
+
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
@@ -17,6 +15,5 @@ spring:
 
 jwt:
   secret:
-    #    expiration-time: 60 * 60 * 1000L
-    expiration_time: 3600000
-    key: a12f3b4e5c6d7f8g9h0i1j2k3l4m5n6o7p8q9r0s1t2u3v4w5x6y7z8a9b0c1d2e3f
+    expiration-time: 60 * 60 * 1000L
+    key: ${LOCAL_JWT_SECRET_KEY}
