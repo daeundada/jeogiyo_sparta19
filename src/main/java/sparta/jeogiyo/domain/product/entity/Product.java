@@ -34,7 +34,7 @@ public class Product extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
-    private Store storeId;
+    private Store store;
 
     @Column(name = "product_name", nullable = false)
     private String productName;
@@ -63,10 +63,11 @@ public class Product extends BaseTimeEntity {
                 .build();
     }
 
-    public void updateProductDetails(String productName, Integer productPrice, String productExplain, Store store) {
+    public void updateProductDetails(String productName, Integer productPrice,
+            String productExplain, Store store) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productExplain = productExplain;
-        this.storeId = store;
+        this.store = store;
     }
 }

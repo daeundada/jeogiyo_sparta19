@@ -34,11 +34,11 @@ public class StoreService {
     }
 
     @Transactional
-    public Store addStore(StoreRequest storeRequest) {
+    public Store addStore(StoreRequest storeRequest, UserDetailsImpl userDetails) {
 
         validateAddStore(storeRequest);
 
-        return storeRepository.save(storeRequest.toEntity());
+        return storeRepository.save(storeRequest.toEntity(userDetails));
     }
 
     //get 메소드들의 경우 읽기 전용이기때문에 readOnly 로 성능 최적화를 ,,, 노려봅니다,,,,
@@ -154,8 +154,6 @@ public class StoreService {
 
         Long user = userDetails.getUser().getUserId();
 
-        UUID storeId = storeRepository.findStoreByUser_UserId(user).getStoreId();
-
-        return storeId;
+        return storeRepository.findStoreByUser_UserId(user).getStoreId();
     }
 }

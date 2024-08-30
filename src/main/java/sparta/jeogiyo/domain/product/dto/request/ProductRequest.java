@@ -16,10 +16,10 @@ public class ProductRequest {
     private Integer productPrice;
     private String productExplain;
 
-    public Product toEntity(){
+    public Product toEntity() {
         return Product.builder()
                 .productId(productId)
-                .storeId(Store.builder().storeId(storeId).build())
+                .store(Store.builder().storeId(storeId).build())
                 .productName(productName)
                 .productPrice(productPrice)
                 .productPrice(productPrice)

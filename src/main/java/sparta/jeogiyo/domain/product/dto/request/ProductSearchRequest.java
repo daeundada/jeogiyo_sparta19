@@ -8,7 +8,7 @@ import sparta.jeogiyo.domain.store.domain.Store;
 @Setter
 public class ProductSearchRequest {
 
-    private Store storeId;
+    private Store store;
     private String productName;
     private Integer productPrice;
 }

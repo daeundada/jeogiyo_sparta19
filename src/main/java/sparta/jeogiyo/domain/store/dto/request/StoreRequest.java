@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sparta.jeogiyo.domain.store.domain.Store;
 import sparta.jeogiyo.domain.store.domain.StoreCategory;
-import sparta.jeogiyo.domain.user.entity.User;
+import sparta.jeogiyo.domain.user.UserDetailsImpl;
 
 @Getter
 @Setter
@@ -18,9 +18,9 @@ public class StoreRequest {
     private String storeNumber;
     private StoreCategory category;
 
-    public Store toEntity() {
+    public Store toEntity(UserDetailsImpl userDetails) {
         return Store.builder()
-                .user(User.builder().build())
+                .user(userDetails.getUser())
                 .storeName(storeName)
                 .storeNumber(storeNumber)
                 .category(category)

@@ -34,18 +34,20 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<ProductResponse>> addProduct(
-            @RequestBody ProductRequest productRequest, @AuthenticationPrincipal UserDetailsImpl userDetails){
+            @RequestBody ProductRequest productRequest,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         UUID storeId = storeService.findByUserId(userDetails);
         productRequest.setStoreId(storeId);
         Product product = productService.addProduct(productRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.of("상품 생성을 성공하였습니다.",product.toResponse()));
+                .body(ApiResponse.of("상품 생성을 성공하였습니다.", product.toResponse()));
     }
 
     @GetMapping("/{productId}")
     public ResponseEntity<ApiResponse<ProductResponse>> getProduct(@PathVariable UUID productId) {
         Product product = productService.findProduct(productId);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.of("단건 조회 성공하였습니다.",product.toResponse()));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.of("단건 조회 성공하였습니다.", product.toResponse()));
     }
 
     @GetMapping
@@ -55,8 +57,10 @@ public class ProductController {
             @RequestParam("sortBy") String sortBy,
             @RequestParam("isAsc") boolean isAsc
     ) {
-        Page<ProductResponse> productResponseList = productService.findAll(page, size, sortBy, isAsc);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.of("상품 조회를 성공하였습니다.",productResponseList));
+        Page<ProductResponse> productResponseList = productService.findAll(page, size, sortBy,
+                isAsc);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.of("상품 조회를 성공하였습니다.", productResponseList));
     }
 
     @GetMapping("/search")
@@ -67,21 +71,26 @@ public class ProductController {
             @RequestParam("sortBy") String sortBy,
             @RequestParam("isAsc") boolean isAsc
     ) {
-        Page<ProductResponse> productSearchResponseList = productService.searchProducts(request, page, size,
+        Page<ProductResponse> productSearchResponseList = productService.searchProducts(request,
+                page, size,
                 sortBy, isAsc);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.of("상품 검색을 성공하였습니다.",productSearchResponseList));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.of("상품 검색을 성공하였습니다.", productSearchResponseList));
     }
 
     @PutMapping("/{productId}")
     public ResponseEntity<ApiResponse<ProductResponse>> updateStore(@PathVariable UUID storeId,
             @RequestBody ProductRequest request) {
         Product updatedProduct = productService.updateProduct(storeId, request);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.of("상품 내용 수정에 성공하였습니다.",updatedProduct.toResponse()));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.of("상품 내용 수정에 성공하였습니다.", updatedProduct.toResponse()));
     }
 
     @DeleteMapping("/{productId}")
-    public ResponseEntity<ApiResponse<ProductResponse>> deleteStore(@PathVariable UUID storeId, @AuthenticationPrincipal UserDetailsImpl user) {
+    public ResponseEntity<ApiResponse<ProductResponse>> deleteStore(@PathVariable UUID storeId,
+            @AuthenticationPrincipal UserDetailsImpl user) {
         Product deletedproduct = productService.deleteProduct(storeId, user);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.of("삭제 성공하였습니다.",deletedproduct.toResponse()));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.of("삭제 성공하였습니다.", deletedproduct.toResponse()));
     }
 }

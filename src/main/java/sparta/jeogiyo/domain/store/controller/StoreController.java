@@ -34,7 +34,7 @@ public class StoreController {
     public ResponseEntity<ApiResponse<StoreResponse>> addStore(
             @RequestBody StoreRequest storeRequest, @AuthenticationPrincipal UserDetailsImpl user) {
         storeRequest.setUserId(user.getUser().getUserId());
-        Store store = storeService.addStore(storeRequest);
+        Store store = storeService.addStore(storeRequest, user);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.of("가게 생성을 성공하였습니다.", store.toResponse()));
     }
@@ -42,7 +42,8 @@ public class StoreController {
     @GetMapping("/{storeId}")
     public ResponseEntity<ApiResponse<StoreResponse>> getStore(@PathVariable UUID storeId) {
         Store store = storeService.findStore(storeId);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.of("단건 조회 성공하였습니다.",store.toResponse()));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.of("단건 조회 성공하였습니다.", store.toResponse()));
     }
 
     @GetMapping
@@ -53,7 +54,8 @@ public class StoreController {
             @RequestParam("isAsc") boolean isAsc
     ) {
         Page<StoreResponse> storeResponseList = storeService.findAll(page, size, sortBy, isAsc);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.of("가게 조회를 성공하였습니다.",storeResponseList));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.of("가게 조회를 성공하였습니다.", storeResponseList));
     }
 
     @GetMapping("/search")
@@ -66,20 +68,24 @@ public class StoreController {
     ) {
         Page<StoreResponse> storeSearchResponseList = storeService.searchStores(request, page, size,
                 sortBy, isAsc);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.of("가게 검색을 성공하였습니다.",storeSearchResponseList));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.of("가게 검색을 성공하였습니다.", storeSearchResponseList));
     }
 
     @PutMapping("/{storeId}")
     public ResponseEntity<ApiResponse<StoreResponse>> updateStore(@PathVariable UUID storeId,
             @RequestBody StoreRequest patchRequest) {
         Store updatedStore = storeService.updateStore(storeId, patchRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.of("가게 내용 수정에 성공하였습니다.",updatedStore.toResponse()));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.of("가게 내용 수정에 성공하였습니다.", updatedStore.toResponse()));
     }
 
     @DeleteMapping("/{storeId}")
-    public ResponseEntity<ApiResponse<StoreResponse>> deleteStore(@PathVariable UUID storeId, @AuthenticationPrincipal UserDetailsImpl user) {
+    public ResponseEntity<ApiResponse<StoreResponse>> deleteStore(@PathVariable UUID storeId,
+            @AuthenticationPrincipal UserDetailsImpl user) {
         Store deletedStore = storeService.deleteStore(storeId, user);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.of("삭제 성공하였습니다.",deletedStore.toResponse()));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.of("삭제 성공하였습니다.", deletedStore.toResponse()));
     }
 
 }
