@@ -46,10 +46,10 @@ public class Product extends BaseTimeEntity {
     private String productExplain;
 
     @Column(name = "is_deleted", nullable = false)
-    private boolean Is_deleted = false;
+    private Boolean isDeleted = false;
 
     public void delete(UserDetailsImpl user) {
-        this.Is_deleted = true;
+        this.isDeleted = true;
         this.setDeletedAt(LocalDateTime.now());
         this.setDeletedBy(user.getUser().getUsername());
     }
