@@ -10,13 +10,21 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import sparta.jeogiyo.domain.product.dto.response.ProductResponse;
 import sparta.jeogiyo.domain.store.domain.Store;
 import sparta.jeogiyo.domain.user.UserDetailsImpl;
 import sparta.jeogiyo.global.entity.BaseTimeEntity;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "p_products")
+@Getter
 public class Product extends BaseTimeEntity {
 
     @Id
@@ -26,13 +34,16 @@ public class Product extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
-    private Store store;
+    private Store storeId;
 
-    @Column(name = "store_name", nullable = false)
+    @Column(name = "product_name", nullable = false)
     private String productName;
 
-    @Column(name = "store_number", nullable = false)
+    @Column(name = "product_price", nullable = false)
     private Integer productPrice;
+
+    @Column(name = "product_explain", nullable = true)
+    private String productExplain;
 
     @Column(name = "is_deleted", nullable = false)
     private boolean Is_deleted = false;
@@ -41,5 +52,14 @@ public class Product extends BaseTimeEntity {
         this.Is_deleted = true;
         this.setDeletedAt(LocalDateTime.now());
         this.setDeletedBy(user.getUser().getUsername());
+    }
+
+    public ProductResponse toResponse() {
+        return ProductResponse.builder()
+                .productId(productId)
+                .productName(productName)
+                .productPrice(productPrice)
+                .productExplain(productExplain)
+                .build();
     }
 }

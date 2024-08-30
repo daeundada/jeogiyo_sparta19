@@ -33,7 +33,7 @@ public class StoreController {
     @PostMapping
     public ResponseEntity<ApiResponse<StoreResponse>> addStore(
             @RequestBody StoreRequest storeRequest, @AuthenticationPrincipal UserDetailsImpl user) {
-        storeRequest.setUserId(user.getUser());
+        storeRequest.setUserId(user.getUser().getUserId());
         Store store = storeService.addStore(storeRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.of("가게 생성을 성공하였습니다.", store.toResponse()));

@@ -20,7 +20,6 @@ import sparta.jeogiyo.domain.store.dto.response.StoreResponse;
 import sparta.jeogiyo.domain.store.domain.Store;
 import sparta.jeogiyo.domain.store.repository.StoreRepository;
 import sparta.jeogiyo.domain.user.UserDetailsImpl;
-import sparta.jeogiyo.domain.user.entity.User;
 import sparta.jeogiyo.global.response.CustomException;
 import sparta.jeogiyo.global.response.ErrorCode;
 
@@ -149,5 +148,14 @@ public class StoreService {
             log.warn("가게등록 실패 - 중복된 가게이름: {}", request.getStoreName());
             throw new CustomException(ErrorCode.DUPLICATE_STORE_NAME);
         }
+    }
+
+    public UUID findByUserId(UserDetailsImpl userDetails) {
+
+        Long user = userDetails.getUser().getUserId();
+
+        UUID storeId = storeRepository.findStoreByUser_UserId(user).getStoreId();
+
+        return storeId;
     }
 }

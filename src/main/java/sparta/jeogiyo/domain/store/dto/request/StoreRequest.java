@@ -1,6 +1,6 @@
 package sparta.jeogiyo.domain.store.dto.request;
 
-import java.util.UUID;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,14 +13,14 @@ import sparta.jeogiyo.domain.user.entity.User;
 @NoArgsConstructor
 public class StoreRequest {
 
-    private User userId;
+    private Long userId;
     private String storeName;
     private String storeNumber;
     private StoreCategory category;
 
     public Store toEntity() {
         return Store.builder()
-                .user(userId)
+                .user(User.builder().build())
                 .storeName(storeName)
                 .storeNumber(storeNumber)
                 .category(category)

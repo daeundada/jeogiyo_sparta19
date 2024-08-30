@@ -29,6 +29,9 @@ public enum ErrorCode {
     DUPLICATE_STORE_NUMBER(409, "중복된 가게 번호입니다."),
     DUPLICATE_STORE_NAME(409, "중복된 가게 이름입니다."),
 
+    // Product 관련
+    PRODUCT_ID_NOT_FOUND(404, "존재하지 않는 상품입니다."),
+
     // JWT 관련
     INVALID_JWT_TOKEN(401, "유효하지 않은 토큰입니다."),
     UNSUPPORTED_JWT_TOKEN(401, "지원되지 않는 JWT 토큰입니다.");
