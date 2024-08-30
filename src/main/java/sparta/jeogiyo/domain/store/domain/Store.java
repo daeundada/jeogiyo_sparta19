@@ -53,6 +53,7 @@ public class Store extends BaseTimeEntity {
 
     public StoreResponse toResponse() {
         return StoreResponse.builder()
+                .storeId(storeId)
                 .storeName(storeName)
                 .storeNumber(storeNumber)
                 .category(category)
