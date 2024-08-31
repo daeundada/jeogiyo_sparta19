@@ -8,4 +8,8 @@ public class ChatResponseDTO {
 
     @Setter
     private String answer;
+
+    public ChatResponseDTO(String answer) {
+        this.answer = answer;
+    }
 }
