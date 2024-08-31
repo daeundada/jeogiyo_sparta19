@@ -118,10 +118,10 @@ public class WebSecurityConfig {
 
                         // 상품 관련
                         // 상품 생성
-                        .requestMatchers(HttpMethod.POST, "/api/products/store/**").hasAuthority(OWNER)
+                        .requestMatchers(HttpMethod.POST, "/api/products").hasAuthority(OWNER)
 
                         // 상품 수정
-                        .requestMatchers(HttpMethod.PATCH, "/api/products/**").hasAuthority(OWNER)
+                        .requestMatchers(HttpMethod.PUT, "/api/products/**").hasAuthority(OWNER)
 
                         // 상품 삭제
                         .requestMatchers(HttpMethod.DELETE, "/api/products/**")
@@ -135,11 +135,19 @@ public class WebSecurityConfig {
 
                         // 장바구니 관련
                         // 장바구니 메뉴 담기
-                        .requestMatchers(HttpMethod.POST, "/api/carts/product/**")
+                        .requestMatchers(HttpMethod.POST, "/api/carts/products")
+                        .hasAnyAuthority(CUSTOMER, MASTER)
+
+                        // 장바구니 수량 수정
+                        .requestMatchers(HttpMethod.PUT, "/api/carts/products")
+                        .hasAnyAuthority(CUSTOMER, MASTER)
+
+                        // 장바구니 메뉴 전체 삭제
+                        .requestMatchers(HttpMethod.DELETE, "/api/carts/products")
                         .hasAnyAuthority(CUSTOMER, MASTER)
 
                         // 장바구니 메뉴 삭제
-                        .requestMatchers(HttpMethod.DELETE, "/api/carts/product/**")
+                        .requestMatchers(HttpMethod.DELETE, "/api/carts/products/**")
                         .hasAnyAuthority(CUSTOMER, MASTER)
 
                         // 장바구니 조회
