@@ -16,7 +16,6 @@ public class Chat extends BaseTimeEntity {
 
     @Id
     @UuidGenerator
-    @GeneratedValue
     @Column(name = "chat_id", updatable = false, nullable = false) // 컬럼 설정
     private UUID chatId;
 
