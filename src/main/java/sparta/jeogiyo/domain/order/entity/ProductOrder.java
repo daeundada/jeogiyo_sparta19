@@ -6,7 +6,7 @@ import sparta.jeogiyo.domain.product.entity.Product;
 
 @Table(name = "p_product_orders")
 @Entity
-public class ProductOrder{
+public class ProductOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

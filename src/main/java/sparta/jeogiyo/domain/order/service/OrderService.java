@@ -73,21 +73,21 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public OrderResponseDTO getOrder(UUID orderId){
+    public OrderResponseDTO getOrder(UUID orderId) {
 
         Order order = orderRepository.findByOrderId(orderId)
-                .orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
 
         List<ProductOrder> productOrder = productOrderRepository.findByOrder_OrderId(orderId);
 
-        return new OrderResponseDTO(order,productOrder);
+        return new OrderResponseDTO(order, productOrder);
     }
 
     @Transactional
-    public void deleteOrder(UUID orderId){
+    public void deleteOrder(UUID orderId) {
 
         Order order = orderRepository.findByOrderId(orderId)
-                .orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
 
         order.setIsDeleted(true);
         order.setDeletedAt(LocalDateTime.now());
@@ -97,12 +97,12 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public OrderResponseDTO searchOrder(String orderNumber){
+    public OrderResponseDTO searchOrder(String orderNumber) {
 
         UUID uuid = UUID.fromString(orderNumber);
 
         Order order = orderRepository.findByOrderId(uuid)
-                .orElseThrow(()-> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
 
         return new OrderResponseDTO(order);
     }
