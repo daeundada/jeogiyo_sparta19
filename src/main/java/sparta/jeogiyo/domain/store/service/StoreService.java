@@ -20,7 +20,6 @@ import sparta.jeogiyo.domain.store.dto.response.StoreResponse;
 import sparta.jeogiyo.domain.store.domain.Store;
 import sparta.jeogiyo.domain.store.repository.StoreRepository;
 import sparta.jeogiyo.domain.user.UserDetailsImpl;
-import sparta.jeogiyo.domain.user.entity.User;
 import sparta.jeogiyo.global.response.CustomException;
 import sparta.jeogiyo.global.response.ErrorCode;
 
@@ -35,11 +34,11 @@ public class StoreService {
     }
 
     @Transactional
-    public Store addStore(StoreRequest storeRequest) {
+    public Store addStore(StoreRequest storeRequest, UserDetailsImpl userDetails) {
 
         validateAddStore(storeRequest);
 
-        return storeRepository.save(storeRequest.toEntity());
+        return storeRepository.save(storeRequest.toEntity(userDetails));
     }
 
     //get 메소드들의 경우 읽기 전용이기때문에 readOnly 로 성능 최적화를 ,,, 노려봅니다,,,,
@@ -149,5 +148,12 @@ public class StoreService {
             log.warn("가게등록 실패 - 중복된 가게이름: {}", request.getStoreName());
             throw new CustomException(ErrorCode.DUPLICATE_STORE_NAME);
         }
+    }
+
+    public UUID findByUserId(UserDetailsImpl userDetails) {
+
+        Long user = userDetails.getUser().getUserId();
+
+        return storeRepository.findStoreByUser_UserId(user).getStoreId();
     }
 }
