@@ -74,7 +74,7 @@ public class OrderController {
 
     }
 
-    @GetMapping
+    @GetMapping("/search")
     public ResponseEntity<ApiResponse<OrderResponseDTO>> searchOrder(
             @RequestParam(name = "orderNumber") String orderNumber) {
 
