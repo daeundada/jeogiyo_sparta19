@@ -42,6 +42,7 @@ public class OrderService {
         order.setUser(userDetails.getUser());
         order.setStore(cartList.get(0).getStore());
         order.setRequirement(orderRequestDTO.getRequirement());
+        order.setCreatedBy(userDetails.getUser().getUsername());
 
         orderRepository.save(order);
 
