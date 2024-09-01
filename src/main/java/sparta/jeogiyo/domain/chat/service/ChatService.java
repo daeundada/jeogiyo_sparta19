@@ -2,6 +2,7 @@ package sparta.jeogiyo.domain.chat.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import sparta.jeogiyo.domain.chat.entity.Chat;
 import sparta.jeogiyo.domain.chat.repository.ChatRepository;
 import sparta.jeogiyo.domain.user.UserDetailsImpl;
 
+@Slf4j
 @Service
 public class ChatService {
 
@@ -34,7 +36,7 @@ public class ChatService {
     }
 
     @Transactional
-    public ChatResponseDTO CreateChat(ChatRequestDTO chatRequestDTO, UserDetailsImpl userDetails) {
+    public ChatResponseDTO createChat(ChatRequestDTO chatRequestDTO, UserDetailsImpl userDetails) {
 
 
         String apiResponse = getAnswer(chatRequestDTO);
@@ -68,12 +70,15 @@ public class ChatService {
             return response.block();
 
         } catch (WebClientResponseException e) {
-            System.err.println(
-                    "Error response: " + e.getStatusCode() + " - " + e.getResponseBodyAsString());
-            return null;
+
+            log.error("응답 오류, 상태 코드: {}, 응답 본문: {}", e.getStatusCode(), e.getResponseBodyAsString());
+            throw new RuntimeException("서버로부터 답변을 가져오는 데 실패했습니다: " + e.getMessage(), e);
+
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+
+            log.error("서버로 답변 요청 중 예상치 못한 오류가 발생했습니다.", e);
+            throw new RuntimeException("예상치 못한 오류가 발생했습니다: " + e.getMessage(), e);
+
         }
     }
 
