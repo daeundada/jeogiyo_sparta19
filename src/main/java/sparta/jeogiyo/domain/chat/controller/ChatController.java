@@ -1,5 +1,6 @@
 package sparta.jeogiyo.domain.chat.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,11 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping("/api/chats")
-    public ResponseEntity<ApiResponse<ChatResponseDTO>> CreateChat(
-            @RequestBody ChatRequestDTO requestDTO,
+    public ResponseEntity<ApiResponse<ChatResponseDTO>> createChat(
+            @RequestBody @Valid ChatRequestDTO requestDTO,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        ChatResponseDTO responseDTO = chatService.CreateChat(requestDTO, userDetails);
+        ChatResponseDTO responseDTO = chatService.createChat(requestDTO, userDetails);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
