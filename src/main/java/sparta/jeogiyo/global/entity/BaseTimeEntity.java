@@ -14,7 +14,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseTimeEntity {
@@ -35,9 +34,11 @@ public abstract class BaseTimeEntity {
     @Column(name = "updated_by")
     private String updatedBy;
 
+    @Setter
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+    @Setter
     @Column(name = "deleted_by")
     private String deletedBy;
 
