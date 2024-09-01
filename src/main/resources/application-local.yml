@@ -15,5 +15,8 @@ spring:
 
 jwt:
   secret:
-    expiration-time: 60 * 60 * 1000L
+    expiration-time: 3600000
     key: ${LOCAL_JWT_SECRET_KEY}
+
+api:
+  key: ${YOUR_API_KEY}
