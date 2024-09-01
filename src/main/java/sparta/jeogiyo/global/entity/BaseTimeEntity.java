@@ -22,6 +22,7 @@ public abstract class BaseTimeEntity {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    @Setter
     @CreatedBy
     @Column(name = "created_by", updatable = false)
     private String createdBy;
@@ -30,6 +31,7 @@ public abstract class BaseTimeEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Setter
     @LastModifiedBy
     @Column(name = "updated_by")
     private String updatedBy;
