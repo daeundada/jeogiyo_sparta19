@@ -9,8 +9,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AccessLevel;
@@ -18,7 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sparta.jeogiyo.domain.cart.entity.Cart;
 import sparta.jeogiyo.domain.user.dto.request.UserUpdateRequestDto;
 import sparta.jeogiyo.global.entity.BaseTimeEntity;
 
@@ -28,15 +27,12 @@ import sparta.jeogiyo.global.entity.BaseTimeEntity;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends BaseTimeEntity {
+public class User extends BaseTimeEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private Long userId;
-
-    @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Cart> carts;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -54,10 +50,12 @@ public class User extends BaseTimeEntity {
     private String address;
 
     @Column(name = "is_public")
-    private boolean isPublic;
+    @Builder.Default
+    private Boolean isPublic = true;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    @Builder.Default
+    private Boolean isDeleted = false;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
