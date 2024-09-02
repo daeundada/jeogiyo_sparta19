@@ -85,8 +85,8 @@ public class OrderService {
 
         return new OrderResponseDTO(order,
                 productOrderList.stream()
-                .map(ProductOrderResponseDTO::new)
-                .toList());
+                        .map(ProductOrderResponseDTO::new)
+                        .toList());
     }
 
     @Transactional
