@@ -81,6 +81,10 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/api/stores/**")
                         .hasAnyAuthority(OWNER, MASTER)
 
+                        // 가게 삭제
+                        .requestMatchers(HttpMethod.DELETE, "/api/stores/**")
+                        .hasAnyAuthority(OWNER, MASTER)
+
                         // 가게 단일 조회
                         .requestMatchers(HttpMethod.GET, "/api/stores/**").permitAll()
 

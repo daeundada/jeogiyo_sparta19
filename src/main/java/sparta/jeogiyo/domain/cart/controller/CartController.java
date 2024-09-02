@@ -1,5 +1,6 @@
 package sparta.jeogiyo.domain.cart.controller;
 
+import jakarta.validation.Valid;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +31,14 @@ public class CartController {
     }
 
     @PostMapping("/products")
-    public ResponseEntity<Object> addCart(@RequestBody CartCreateRequestDto requestDto) {
+    public ResponseEntity<Object> addCart(@RequestBody @Valid CartCreateRequestDto requestDto) {
         CartResponseDto cartResponseDto = cartService.addCart(requestDto);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.of("장바구니에 성공적으로 담겼습니다.", cartResponseDto));
     }
 
     @PutMapping("/products")
-    public ResponseEntity<Object> updateCart(@RequestBody CartUpdateRequestDto requestDto) {
+    public ResponseEntity<Object> updateCart(@RequestBody @Valid CartUpdateRequestDto requestDto) {
         CartResponseDto cartResponseDto = cartService.updateCart(requestDto);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.of("수정되었습니다.", cartResponseDto));
