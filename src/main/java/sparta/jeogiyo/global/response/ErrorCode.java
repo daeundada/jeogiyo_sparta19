@@ -37,6 +37,9 @@ public enum ErrorCode {
     CART_IS_EMPTY(404, "장바구니가 비어있습니다."),
     CART_PRODUCT_ALREADY_EXIST(409, "이미 존재하는 상품입니다."),
 
+    //Order 관련
+    ORDER_NOT_FOUND(404, "존재하지 않는 주문입니다."),
+
     // JWT 관련
     INVALID_JWT_TOKEN(401, "유효하지 않은 토큰입니다."),
     UNSUPPORTED_JWT_TOKEN(401, "지원되지 않는 JWT 토큰입니다.");
