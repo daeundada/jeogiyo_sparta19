@@ -12,6 +12,7 @@ import sparta.jeogiyo.domain.cart.entity.Cart;
 import sparta.jeogiyo.domain.cart.repository.CartRepository;
 import sparta.jeogiyo.domain.order.dto.request.OrderRequestDTO;
 import sparta.jeogiyo.domain.order.dto.response.OrderResponseDTO;
+import sparta.jeogiyo.domain.order.dto.response.ProductOrderResponseDTO;
 import sparta.jeogiyo.domain.order.entity.Order;
 import sparta.jeogiyo.domain.order.entity.ProductOrder;
 import sparta.jeogiyo.domain.order.repository.OrderRepository;
@@ -79,9 +80,13 @@ public class OrderService {
         Order order = orderRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
 
-        List<ProductOrder> productOrder = productOrderRepository.findByOrder_OrderId(orderId);
+        List<ProductOrder> productOrderList = productOrderRepository.findByOrder_OrderId(orderId);
 
-        return new OrderResponseDTO(order, productOrder);
+
+        return new OrderResponseDTO(order,
+                productOrderList.stream()
+                        .map(ProductOrderResponseDTO::new)
+                        .toList());
     }
 
     @Transactional
