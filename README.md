@@ -3,10 +3,13 @@
 1. [역할분담](#역할분담)
 2. [서비스 구성 및 실행방법](#서비스-구성-및-실행방법)
 3. [프로젝트 목적/상세](#프로젝트-목적상세)
-4. [ERD](#erd)
 5. [기술 스택](#기술-스택)
 6. [API DOCS](#api-docs)
 7. [파일구조](#파일구조)
+
+</br>
+</br>
+
    
 # 저기요 🛵
 
@@ -38,14 +41,32 @@
     </tr>
 </table>
 
+</br>
+</br>
+
+
 ## 서비스 구성 및 실행방법
 
 ### 프로젝트 아키텍처
 ![image](https://github.com/user-attachments/assets/afcb2fd2-b3b4-43e9-ba6e-c4e8395cf1e3)
 
+</br>
+
 
 ### ERD
 ![image](https://github.com/user-attachments/assets/49e24c58-b6c3-483c-b727-b17c92e96106)
+
+</br>
+
+### 실행방법
+
+DNS 주소 : http://ec2-13-125-69-125.ap-northeast-2.compute.amazonaws.com
+
+***주소 뒤에 + :8080/{API} 를 붙여 request 요청***
+
+ex) http://ec2-13-125-69-125.ap-northeast-2.compute.amazonaws.com:8080/api/users/sign-in
+
+API는 목차 6번 [API DOCS](#api-docs) 로 확인할 수 있습니다.
 
 </br>
 
