@@ -46,6 +46,7 @@ public class Product extends BaseTimeEntity {
     private String productExplain;
 
     @Column(name = "is_deleted", nullable = false)
+    @Builder.Default
     private Boolean isDeleted = false;
 
     public void delete(UserDetailsImpl user) {
