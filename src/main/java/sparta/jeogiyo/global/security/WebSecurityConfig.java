@@ -89,18 +89,21 @@ public class WebSecurityConfig {
 
                         // 주문 관련
                         // 주문 등록
-                        .requestMatchers(HttpMethod.POST, "/api/orders/cart/**")
+                        .requestMatchers(HttpMethod.POST, "/api/orders")
                         .hasAnyAuthority(CUSTOMER, MASTER)
 
-                        // 주문 수정
-                        .requestMatchers(HttpMethod.PATCH, "/api/stores/**")
-                        .hasAnyAuthority(OWNER, MASTER)
+                        // 주문 전체 조회(손님)
+                        .requestMatchers(HttpMethod.GET, "/api/orders")
+                        .hasAnyAuthority(CUSTOMER)
 
                         // 주문 삭제
-                        .requestMatchers(HttpMethod.DELETE, "/api/orders/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/orders/{orderId}").permitAll()
 
                         // 주문 상세 조회
-                        .requestMatchers(HttpMethod.GET, "/api/orders/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/orders/{orderId}").permitAll()
+
+                        // 주문 검색
+                        .requestMatchers(HttpMethod.GET, "/api/orders/").permitAll()
 
                         // 결제 관련
                         // 결제 요청
