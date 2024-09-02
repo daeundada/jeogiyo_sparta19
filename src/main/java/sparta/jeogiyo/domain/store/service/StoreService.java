@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +45,7 @@ public class StoreService {
 
     //get 메소드들의 경우 읽기 전용이기때문에 readOnly 로 성능 최적화를 ,,, 노려봅니다,,,,
     @Transactional(readOnly = true)
+    @Cacheable(value = "storePage", key = "T(String).format('%d_%d_%s_%b', #page, #size, #sortBy, #isAsc)")
     public Page<StoreResponse> findAll(int page, int size, String sortBy, boolean isAsc) {
         if (size != 10 && size != 30 && size != 50) {
             size = 10;
@@ -65,6 +68,7 @@ public class StoreService {
     }
 
     @Transactional
+    @CacheEvict(value = "storePage", allEntries = true)
     public Store deleteStore(UUID storeId, UserDetailsImpl user) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(
@@ -74,6 +78,7 @@ public class StoreService {
     }
 
     @Transactional
+    @CacheEvict(value = "storePage", allEntries = true)
     public Store updateStore(UUID storeId, StoreRequest storeRequest) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(

@@ -1,5 +1,6 @@
 package sparta.jeogiyo.domain.store.dto.response;
 
+import java.io.Serializable;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +10,7 @@ import sparta.jeogiyo.domain.store.domain.StoreCategory;
 @AllArgsConstructor
 @Getter
 @Builder
-public class StoreResponse {
+public class StoreResponse implements Serializable {
 
     private UUID storeId;
     private String storeName;

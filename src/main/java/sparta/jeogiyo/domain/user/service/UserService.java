@@ -2,6 +2,7 @@ package sparta.jeogiyo.domain.user.service;
 
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +32,7 @@ public class UserService {
     public UserResponseDto getUserById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(
                 ErrorCode.USER_NOT_FOUND));
-        if (user.isDeleted() || !user.isPublic()) {
+        if (user.getIsDeleted() || !user.getIsPublic()) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
         return UserResponseDto.fromEntity(user);
@@ -52,6 +53,7 @@ public class UserService {
     }
 
     @Transactional
+    @CacheEvict(value = "userDetails", allEntries = true)
     public UserResponseDto updateUser(Long updateUserId, UserUpdateRequestDto updateRequestDto) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
@@ -73,6 +75,7 @@ public class UserService {
     }
 
     @Transactional
+    @CacheEvict(value = "userDetails", allEntries = true)
     public void deleteUser(Long deleteUserId, UserDeleteRequestDto deleteRequestDto) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
@@ -86,7 +89,7 @@ public class UserService {
 
     public void validateUserRequestDto(User user, Long requestId, String requestUserPassword) {
         // 이미 soft 삭제된 User인 경우
-        if (user.isDeleted()) {
+        if (user.getIsDeleted() || !user.getIsPublic()) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
 
