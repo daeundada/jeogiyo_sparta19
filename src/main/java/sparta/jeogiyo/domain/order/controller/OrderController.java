@@ -30,8 +30,7 @@ public class OrderController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ApiResponse.of("주문 성공", null));
-
+                .body(ApiResponse.of("주문 생성 성공", null));
     }
 
     @GetMapping
@@ -47,7 +46,6 @@ public class OrderController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.of("주문 전체 조회 성공", orderResponseDTOS));
-
     }
 
     @GetMapping("/{orderId}")
@@ -59,7 +57,6 @@ public class OrderController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.of("주문 상세 조회 성공", orderResponseDTO));
-
     }
 
     @DeleteMapping("/{orderId}")
@@ -71,7 +68,6 @@ public class OrderController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ApiResponse.of("주문 삭제 성공", null));
-
     }
 
     @GetMapping("/search")
@@ -84,5 +80,4 @@ public class OrderController {
                 .status(HttpStatus.OK)
                 .body(ApiResponse.of("주문 검색 성공", orderResponseDTO));
     }
-
 }
