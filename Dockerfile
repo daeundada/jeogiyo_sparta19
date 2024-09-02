@@ -2,7 +2,7 @@ FROM openjdk:17-jdk-alpine
 
 WORKDIR /app
 
-COPY build/libs/Jeogiyo-0.0.1-SNAPSHOT.jar app.jar
+COPY Jeogiyo-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
 
