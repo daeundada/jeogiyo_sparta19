@@ -1,4 +1,4 @@
-package sparta.global.response;
+package sparta.jeogiyo.global.response;
 
 import lombok.Getter;
 

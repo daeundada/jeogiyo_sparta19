@@ -12,3 +12,11 @@ spring:
       hibernate:
         show_sql: true
     open-in-view: false
+
+jwt:
+  secret:
+    expiration-time: 3600000
+    key: ${LOCAL_JWT_SECRET_KEY}
+
+api:
+  key: ${YOUR_API_KEY}

@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: false
+    open-in-view: false
+  data:
+    redis:
+      username: ${REDIS_USERNAME}
+      password: ${REDIS_PASSWORD}
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
+jwt:
+  secret:
+    expiration-time: ${JWT_EXPIRATION_TIME}
+    key: ${JWT_SECRET_KEY}
+
+api:
+  key: ${API_KEY}

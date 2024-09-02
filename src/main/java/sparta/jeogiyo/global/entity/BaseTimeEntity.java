@@ -1,18 +1,19 @@
-package sparta.global.entity;
+package sparta.jeogiyo.global.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseTimeEntity {
@@ -21,6 +22,26 @@ public abstract class BaseTimeEntity {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    @Setter
+    @CreatedBy
+    @Column(name = "created_by", updatable = false)
+    private String createdBy;
+
     @LastModifiedDate
-    private LocalDateTime modifiedAt;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Setter
+    @LastModifiedBy
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @Setter
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @Setter
+    @Column(name = "deleted_by")
+    private String deletedBy;
+
 }

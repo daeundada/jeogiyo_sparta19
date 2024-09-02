@@ -1,4 +1,4 @@
-package sparta.global.response;
+package sparta.jeogiyo.global.response;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
