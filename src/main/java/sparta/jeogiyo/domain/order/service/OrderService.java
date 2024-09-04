@@ -38,6 +38,10 @@ public class OrderService {
 
         List<Cart> cartList = cartRepository.findCartsByUserId(userDetails.getUser().getUserId());
 
+        if(cartList.isEmpty()){
+            throw new CustomException(ErrorCode.CART_EMPTY);
+        }
+
         Order order = new Order();
 
         order.setUser(userDetails.getUser());
@@ -103,9 +107,9 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public OrderResponseDTO searchOrder(String orderNumber) {
+    public OrderResponseDTO searchOrder(String orderId) {
 
-        UUID uuid = UUID.fromString(orderNumber);
+        UUID uuid = UUID.fromString(orderId);
 
         Order order = orderRepository.findByOrderId(uuid)
                 .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
