@@ -39,6 +39,7 @@ public enum ErrorCode {
 
     //Order 관련
     ORDER_NOT_FOUND(404, "존재하지 않는 주문입니다."),
+    CART_EMPTY(404, "카트가 비어 있습니다."),
 
     // JWT 관련
     INVALID_JWT_TOKEN(401, "유효하지 않은 토큰입니다."),
