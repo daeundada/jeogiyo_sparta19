@@ -1,6 +1,9 @@
 package sparta.jeogiyo.domain.order.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,13 +38,12 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<OrderResponseDTO>>> getAllOrder(
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size,
-            @RequestParam(name = "sort", defaultValue = "createdAt,desc") String sort,
+            @PageableDefault
+                    (size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         List<OrderResponseDTO> orderResponseDTOS =
-                orderService.getAllOrder(userDetails, page, size, sort);
+                orderService.getAllOrder(userDetails, pageable);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

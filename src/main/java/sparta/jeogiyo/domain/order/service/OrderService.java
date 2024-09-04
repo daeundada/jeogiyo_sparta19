@@ -3,9 +3,7 @@ package sparta.jeogiyo.domain.order.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sparta.jeogiyo.domain.cart.entity.Cart;
@@ -64,12 +62,7 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public List<OrderResponseDTO> getAllOrder(UserDetailsImpl userDetails, int page, int size, String sort) {
-
-        String[] sortParams = sort.split(",");
-        Sort sortObj = Sort.by(Sort.Order.by(sortParams[0]).with(Sort.Direction.fromString(sortParams[1])));
-
-        Pageable pageable = PageRequest.of(page, size, sortObj);
+    public List<OrderResponseDTO> getAllOrder(UserDetailsImpl userDetails,Pageable pageable) {
 
         Page<Order> orderPage = orderRepository.findByUser_UserId(userDetails.getUser().getUserId(), pageable);
 
