@@ -56,8 +56,19 @@ public class ChatService {
 
     public String getAnswer(ChatRequestDTO chatRequestDTO) {
 
-        String requestBody = String.format("{\"contents\":[{\"parts\":[{\"text\":\"%s 100자 안으로 대답해줘\"}]}]}",
-                chatRequestDTO.getContents().getParts().getText());
+        String requestBody = """
+                {
+                    "contents": [
+                        {
+                            "parts": [
+                                {
+                                    "text": "%s 100자 안으로 대답해줘"
+                                }
+                            ]
+                        }
+                    ]
+                }
+                """.formatted(chatRequestDTO.getContents().getParts().getText());
 
         try {
             Mono<String> response = webClient.post().uri(
@@ -94,8 +105,8 @@ public class ChatService {
             return new ChatResponseDTO(textNode.asText());
 
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            log.error("",e);
+            throw new RuntimeException("예상치 못한 오류가 발생했습니다: " + e.getMessage(), e);
         }
     }
 }
