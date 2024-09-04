@@ -72,9 +72,9 @@ public class OrderController {
 
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<OrderResponseDTO>> searchOrder(
-            @RequestParam(name = "orderNumber") String orderNumber) {
+            @RequestParam(name = "orderId") String orderId) {
 
-        OrderResponseDTO orderResponseDTO = orderService.searchOrder(orderNumber);
+        OrderResponseDTO orderResponseDTO = orderService.searchOrder(orderId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
